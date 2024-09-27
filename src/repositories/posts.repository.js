@@ -23,7 +23,7 @@ export class PostsRepository {
   };
 
   findDetailPosts = async (postId) => {
-    const detailPost = await prisma.posts.findFirst({
+    const detailPost = await prisma.posts.findUnique({
       where: { postId: +postId },
     });
 
@@ -32,9 +32,8 @@ export class PostsRepository {
 
   updatePosts = async (postId, password, title, content) => {
     const updatedPost = await prisma.posts.update({
-      where: { postId: +postId },
+      where: { postId: +postId, password: password },
       data: {
-        password,
         title,
         content,
       },
