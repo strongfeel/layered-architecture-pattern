@@ -43,4 +43,56 @@ export class PostsService {
       updatedAt: createdPost.updatedAt,
     };
   };
+
+  detailPost = async (postId) => {
+    const posts = await this.postsRepository.findDetailPosts(postId);
+
+    return {
+      postId: posts.postId,
+      nickname: posts.nickname,
+      title: posts.title,
+      createdAt: posts.createdAt,
+      updatedAt: posts.updatedAt,
+    };
+  };
+
+  updatePost = async (postId, password, title, content) => {
+    const post = await this.postsRepository.findDetailPosts(postId);
+    if (!post) {
+      throw new Error("존재하지 않는 게시글 입니다.");
+    }
+
+    // 저장소에게 데이터 수정 요청 // 원래 hashedPassword 사용
+    await this.postsRepository.updatePosts(postId, password, title, content);
+
+    // 변경된 데이터를 조회
+    const updatedPost = await this.postsRepository.findDetailPosts(postId);
+
+    return {
+      postId: updatedPost.postId,
+      nickname: updatedPost.nickname,
+      title: updatedPost.title,
+      content: updatedPost.content,
+      createdAt: updatedPost.createdAt,
+      updatedAt: updatedPost.updatedAt,
+    };
+  };
+
+  deletePost = async (postId, password) => {
+    const post = await this.postsRepository.findDetailPosts(postId);
+    if (!post) {
+      throw new Error("존재하지 않는 게시글 입니다.");
+    }
+
+    await this.postsRepository.deletePosts(postId, password);
+
+    return {
+      postId: post.postId,
+      nickname: post.nickname,
+      title: post.title,
+      content: post.content,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+    };
+  };
 }

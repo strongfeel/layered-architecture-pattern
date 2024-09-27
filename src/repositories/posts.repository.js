@@ -21,4 +21,33 @@ export class PostsRepository {
 
     return createdPost;
   };
+
+  findDetailPosts = async (postId) => {
+    const detailPost = await prisma.posts.findFirst({
+      where: { postId: +postId },
+    });
+
+    return detailPost;
+  };
+
+  updatePosts = async (postId, password, title, content) => {
+    const updatedPost = await prisma.posts.update({
+      where: { postId: +postId },
+      data: {
+        password,
+        title,
+        content,
+      },
+    });
+
+    return updatedPost;
+  };
+
+  deletePosts = async (postId, password) => {
+    const deletedPost = await prisma.posts.delete({
+      where: { postId: +postId, password: password },
+    });
+
+    return deletedPost;
+  };
 }
