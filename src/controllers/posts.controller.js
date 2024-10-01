@@ -1,8 +1,9 @@
-import { PostsService } from "../services/posts.service.js";
-
 // Post의 컨트롤러(Controller)역할을 하는 클래스
 export class PostsController {
-  postsService = new PostsService(); // Post 서비스를 클래스를 컨트롤러 클래스의 멤버 변수로 할당합니다.
+  //postsService = new PostsService(); // Post 서비스를 클래스를 컨트롤러 클래스의 멤버 변수로 할당합니다.
+  constructor(postsService) {
+    this.postsService = postsService;
+  }
 
   getPosts = async (req, res, next) => {
     try {
@@ -30,6 +31,10 @@ export class PostsController {
   createPost = async (req, res, next) => {
     try {
       const { nickname, password, title, content } = req.body;
+
+      if (!nickname || !password || !title || !content) {
+        throw new Error("InvalidParamsError");
+      }
 
       // 서비스 계층에 구현된 createPost 로직을 실행합니다.
       const createdPost = await this.postsService.createPost(

@@ -1,7 +1,7 @@
-import { PostsRepository } from "../repositories/posts.repository.js";
-
 export class PostsService {
-  postsRepository = new PostsRepository();
+  constructor(postsRepository) {
+    this.postsRepository = postsRepository;
+  }
 
   findAllPosts = async () => {
     // 저장소(Repository)에게 데이터를 요청합니다.
@@ -26,7 +26,7 @@ export class PostsService {
 
   createPost = async (nickname, password, title, content) => {
     // 저장소(Repository)에게 데이터를 요청합니다.
-    const createdPost = await this.postsRepository.createPost(
+    const createdPost = await this.postsRepository.createPosts(
       nickname,
       password,
       title,
